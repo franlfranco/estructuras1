@@ -21,12 +21,12 @@ int matricula; char nombre[30]; char sexo; //m ó f
 #include <string.h>
 #include <stdbool.h>
 
+const int maxC = 30;
+const int maxDim = maxC;
+
 typedef struct {
 int matricula; char nombre[30]; char sexo; //m ó f
 } alumno;
-
-const int maxDim = 20;
-const int maxC = 30;
 
 int cargaParalela(int matricula[], char nombre[][maxC], int dim){
   char control = 's';
@@ -156,7 +156,7 @@ void mostrarNombreXMatricula(alumno a[], int validos){
 }
 
 //Funcion del ejercicio 7
-int buscarMenor(alumno a[maxC],int validos, int desde){
+int buscarMenor(alumno a[],int validos, int desde){
   int pos = desde;
   for( int i = desde;i<validos;i++){
     if(a[pos].matricula>a[i].matricula){
@@ -167,20 +167,14 @@ int buscarMenor(alumno a[maxC],int validos, int desde){
 }
 
 void ordenarXMatricula(alumno a[],int validos){
-  char aux[30];
+  alumno aux[1];
   int mat,pos;
   char s;
   for(int i = 0; i<validos;i++){
     pos=buscarMenor(a,validos,i);
-    strcpy(aux,a[i].nombre);
-    strcpy(a[i].nombre,a[pos].nombre);
-    strcpy(a[pos].nombre,aux);
-    mat=a[i].matricula;
-    a[i].matricula=a[pos].matricula;
-    a[pos].matricula=mat;
-    s=a[i].sexo;
-    a[i].sexo=a[pos].sexo;
-    a[pos].sexo=s;
+    aux[0]=a[i];
+    a[i]=a[pos];
+    a[pos]=aux[0];
   }
 }
 
@@ -200,7 +194,6 @@ int main() {
   //mostrarArreglosParalelos(matricula,nombre,validos);
   validos = cargaStruct(a,maxDim);
   //mostrarNombreXMatricula(a,validos);
-  //ordenarXMatricula(a,validos);
   ordenarXMatricula(a,validos);
   mostrarStruct(a,validos);
   return 0;
